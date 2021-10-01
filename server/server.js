@@ -440,7 +440,7 @@ app.get("/kontaktas/:id?", async (req, res) => {
                     where id = ?`,
                     [id],
                 );
-                if (adresas.length > 0) {
+                if (kontaktas.length > 0) {
                     // pasitikrinam ar gavom norima irasa ir jei taip salia formuojam tentele
                     // is susijusios lenteles irasu
                     res.render("kontaktas", { kontaktas: kontaktas[0] });
