@@ -17,6 +17,10 @@
     <form method="get" action="/zmogus">
         <button type="submit">Naujas žmogus</button>
     </form>
+    {{#if zmogus}}
+    <a class="button" href="/adresas?zmogusId={{zmogus.id}}">Naujas adresas</a>
+    <a class="button" href="/adresas?zmogusId={{zmogus.id}}">Naujas kontaktas</a>
+    {{/if}}
 </div>
 
 <body>

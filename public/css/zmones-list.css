@@ -26,23 +26,33 @@ h2 {
     width: 100%;
 }
 
-.top-navigation button {
+.top-navigation button, .button {
     height: 45px;
+    width: 160px;
     font: 15px/1 Helvetica, Arial, sans-serif;
     color: #512b2b;
     background-color: #ebe7e2;
     border: 1px solid #fff;
     margin: 0;
     float: left;
-    padding: 1px 40px;
+    padding: 1px 0;
     transition: background-color .3s ease-out;
+}
+
+.top-navigation a {
+    text-decoration: none;
+    line-height: 41px;
+    height: 41px;
+    width: 158px;
+    text-align: center;
 }
 
 .top-navigation .active {
     background-color: #fdc129;
 }
 
-.top-navigation button:hover {
+.top-navigation button:hover,
+.button:hover {
     background-color: #fdc129;
 }
 
