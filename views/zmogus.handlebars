@@ -1,5 +1,6 @@
 {{!-- PAGRINDINIS IRASAS  --}}
 {{!-- pagal ji bus atvaizduojami duomenys is susijusios lenteles --}}
+<h1>Asmens duomenys</h1>
 <form action="/zmogus" method="post">
   {{#if zmogus}}
   <input type="hidden" name="id" value="{{zmogus.id}}">
@@ -18,51 +19,58 @@
 </form>
 
 {{!-- SUSIJUSIOS LENTELES DUOMENYS --}}
-{{#if zmogus}}
-<h1>Adresai:</h1>
-<a class="button" href="/adresas?zmogusId={{zmogus.id}}">Naujas adresas</a>
-{{/if}}
-{{#if adresai}}
-<table>
-  {{!-- lenteles headerio formavimas --}}
-  <tr>
-    <th>Adresas</th>
-    <th>Miestas</th>
-    <th>Valstybė</th>
-    <th>Pašto kodas</th>
-  </tr>
-  {{!-- lenteles eiluciu formavimas --}}
-  {{#each adresai}}
-  <tr>
-    <td><a href="/adresas/{{id}}">{{adresas}}</a></td>
-    <td><a href="/adresas/{{id}}">{{miestas}}</a></td>
-    <td><a href="/adresas/{{id}}">{{valstybe}}</a></td>
-    <td><a href="/adresas/{{id}}">{{pasto_kodas}}</a></td>
-    <td><a href="/adresas/{{id}}/del">X</a></td>
-  </tr>
-  {{/each}}
-</table>
-{{/if}}
+<div class="left-pane">
+    {{#if zmogus}}
+    <h2>Adresai:</h2>
+    <a class="button" href="/adresas?zmogusId={{zmogus.id}}">Naujas adresas</a>
+    {{/if}}
+    {{#if adresai}}
+    <table>
+    {{!-- lenteles headerio formavimas --}}
+    <tr>
+        <th>Adresas</th>
+        <th>Miestas</th>
+        <th>Valstybė</th>
+        <th>Pašto kodas</th>
+        <th></th>
+    </tr>
+    {{!-- lenteles eiluciu formavimas --}}
+    {{#each adresai}}
+    <tr>
+        <td><a href="/adresas/{{id}}">{{adresas}}</a></td>
+        <td><a href="/adresas/{{id}}">{{miestas}}</a></td>
+        <td><a href="/adresas/{{id}}">{{valstybe}}</a></td>
+        <td><a href="/adresas/{{id}}">{{pasto_kodas}}</a></td>
+        <td><a href="/adresas/{{id}}/del"><i class="icon-trash"></i></a></td>
+    </tr>
+    {{/each}}
+    </table>
+    {{/if}}
+</div>
+
 
 {{!-- SUSIJUSIOS LENTELES DUOMENYS --}}
-{{#if zmogus}}
-<h1>Kontaktai:</h1>
-<a class="button" href="/kontaktas?zmogusId={{zmogus.id}}">Naujas kontaktas</a>
-{{/if}}
-{{#if kontaktai}}
-<table>
-  {{!-- lenteles headerio formavimas --}}
-  <tr>
-    <th>Tipas</th>
-    <th>Reikšmė</th>
-  </tr>
-  {{!-- lenteles eiluciu formavimas --}}
-  {{#each kontaktai}}
-  <tr>
-    <td><a href="/kontaktas/{{id}}">{{tipas}}</a></td>
-    <td><a href="/kontaktas/{{id}}">{{reiksme}}</a></td>
-    <td><a href="/kontaktas/{{id}}/del">X</a></td>
-  </tr>
-  {{/each}}
-</table>
-{{/if}}
+<div class="right-pane">
+    {{#if zmogus}}
+    <h2>Kontaktai:</h2>
+    <a class="button" href="/kontaktas?zmogusId={{zmogus.id}}">Naujas kontaktas</a>
+    {{/if}}
+    {{#if kontaktai}}
+    <table>
+    {{!-- lenteles headerio formavimas --}}
+    <tr>
+        <th>Tipas</th>
+        <th>Reikšmė</th>
+        <th></th>
+    </tr>
+    {{!-- lenteles eiluciu formavimas --}}
+    {{#each kontaktai}}
+    <tr>
+        <td><a href="/kontaktas/{{id}}">{{tipas}}</a></td>
+        <td><a href="/kontaktas/{{id}}">{{reiksme}}</a></td>
+        <td><a href="/kontaktas/{{id}}/del"><i class="icon-trash"></i></a></td>
+    </tr>
+    {{/each}}
+    </table>
+    {{/if}}
+</div>

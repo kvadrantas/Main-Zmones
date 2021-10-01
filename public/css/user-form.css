@@ -38,5 +38,19 @@ aaa {
     border-radius: 3px;
 }
 
+.left-pane, .right-pane {
+    float: left;
+}
+
+.right-pane {
+    
+}
+
 /* asmenine informacija */
 /* gyvenamoji vieta/kontaktai */
+
+@media (max-width: 1000px) {
+    .right-pane {
+        margin-left: 100px;
+    }
+}
