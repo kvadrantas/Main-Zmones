@@ -375,31 +375,6 @@ app.post("/adresas", async (req, res) => {
 });
 
 // IRASO TRYNIMAS
-// app.get("/adresas/:id/del", async (req, res) => {
-//     const id = parseInt(req.params.id);
-//     // if (!isNaN(id)) {
-//     //   let conn;
-//     //   try {
-//     //     conn = await connect();
-//     //     await query(
-//     //       conn,
-//     //       `
-//     //         delete from adresai
-//     //         where id = ?`,
-//     //       [id],
-//     //     );
-//     //   } catch (err) {
-//     //     // ivyko klaida trinant irasa is DB
-//     //     res.render("klaida", { err });
-//     //     return;
-//     //   } finally {
-//     //     await end(conn);
-//     //   }
-//     // }
-//     console.log(req.body.id, req.body.zmogusId, req.params.id);
-//     // res.redirect("/zmogus/" + req.body.Id);
-// });
-
 app.get("/adresas/:id/del", async (req, res) => {
     const id = parseInt(req.params.id);
     let zmogusId;
@@ -422,6 +397,169 @@ app.get("/adresas/:id/del", async (req, res) => {
             conn,
             `
               delete from adresai
+              where id = ?`,
+            [id],
+          );
+        }
+      } catch (err) {
+        // ivyko klaida trinant duomenis
+        res.render("klaida", { err });
+        return;
+      } finally {
+        await end(conn);
+      }
+    }
+    if (zmogusId) {
+      res.redirect("/zmogus/" + zmogusId);
+    } else {
+      res.redirect("/zmones");
+    }
+  });
+
+// *****************************************************************************
+// *************************** LENTELE KONTAKTAI *******************************
+// *****************************************************************************
+
+// VIENO IRASO HTML FORMOS GENERAVIMAS
+app.get("/kontaktas/:id?", async (req, res) => {
+    // Tikriname ar yra perduotas id parametras.
+    // id yra -> senas irasas ir forma uzpildom iraso duomenimis
+    // id nera -> naujas irasas, formos laukai pateikiami tusti
+    if (req.params.id) {
+        const id = parseInt(req.params.id);
+        if (!isNaN(id)) { // pasitikrinam ar id yra skaicius ir ar koks internautas neidejo savo tekstinio id
+            let conn;
+            try {
+                conn = await connect();
+                const { results: kontaktas } = await query(
+                    conn,
+                    `
+                    select
+                        id, zmones_id, tipas, reiksme
+                    from kontaktai
+                    where id = ?`,
+                    [id],
+                );
+                if (adresas.length > 0) {
+                    // pasitikrinam ar gavom norima irasa ir jei taip salia formuojam tentele
+                    // is susijusios lenteles irasu
+                    res.render("kontaktas", { kontaktas: kontaktas[0] });
+                } else {
+                    // Jei pagrindinis irasas nerastas permetam i visu irasu sarasa
+                    // o galim parodyt klaidos forma, kad pagal id irasas nerastas
+                    res.redirect("/zmones");
+                }
+            } catch (err) {
+                // ivyko klaida gaunant duomenis
+                res.render("klaida", { err });
+            } finally {
+                await end(conn);
+            }
+        } else {
+            // Jei id buvo nurodytas ne skaicius permetam i visu irasu sarasa
+            // o galim parodyt klaidos forma, kad id negali buti stringas
+            res.redirect("/zmones");
+        }
+    } else {
+        const zmogusId = parseInt(req.query.zmogusId);
+
+        // Jei id nenurodytas vadinasi tai bus
+        // naujo iraso ivedimas
+        res.render("kontaktas", { zmogusId });
+    }
+});
+
+// IRASO SAUGOJIIMAS
+app.post("/kontaktas", async (req, res) => {
+    if (req.body.id) {
+        // id yra -> irasa redaguojam
+        // id nera -> kuriam nauja irasa
+        const id = parseInt(req.body.id);
+
+        if (
+            // tikrinam duomenu teisinguma
+            !isNaN(id) &&
+            typeof req.body.tipas === "string" &&
+            req.body.tipas.trim() !== "" &&
+            typeof req.body.reiksme === "string" &&
+            req.body.reiksme.trim() !== ""
+        ) {
+            let conn;
+            try {
+                conn = await connect();
+                await query(
+                    conn,
+                    `
+                    update kontaktai
+                    set tipas = ? , reiksme = ?
+                    where id = ?`,
+                    [req.body.tipas, req.body.reiksme, id],
+                );
+            } catch (err) {
+                // ivyko klaida skaitant duomenis is DB
+                res.render("klaida", { err });
+                return;
+            } finally {
+                await end(conn);
+            }
+        } 
+    } else {
+        // jei nera id, kuriam nauja irasa
+        const zmogusId = parseInt(req.body.zmogusId);
+ 
+        if (
+            !isNaN(zmogusId) &&
+            typeof req.body.tipas === "string" &&
+            req.body.tipas.trim() !== "" &&
+            typeof req.body.reiksme === "string" &&
+            req.body.reiksme.trim() !== ""
+        ) {
+            let conn;
+            try {
+                conn = await connect();
+                await query(
+                    conn,
+                    `
+                    insert into kontaktai
+                    (tipas, reiksme, zmones_id)
+                    values (?, ?, ?)`,
+                    [req.body.tipas, req.body.reiksme, zmogusId],
+                );
+            } catch (err) {
+                // ivyko klaida irasant duomenis i DB
+                res.render("klaida", { err });
+                return;
+            } finally {
+                await end(conn);
+            }
+        }
+    }
+    res.redirect("/zmogus/" + req.body.zmogusId);
+});
+
+// IRASO TRYNIMAS
+app.get("/kontaktas/:id/del", async (req, res) => {
+    const id = parseInt(req.params.id);
+    let zmogusId;
+    if (!isNaN(id)) {
+      let conn;
+      try {
+        conn = await connect();
+        const { results: kontaktai } = await query(
+          conn,
+          `
+          select
+            zmones_id as zmogusId
+          from kontaktai
+          where id = ?`,
+          [id],
+        );
+        if (kontaktai.length > 0) {
+          zmogusId = kontaktai[0].zmogusId;
+          await query(
+            conn,
+            `
+              delete from kontaktai
               where id = ?`,
             [id],
           );
