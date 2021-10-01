@@ -1,0 +1,68 @@
+{{!-- PAGRINDINIS IRASAS  --}}
+{{!-- pagal ji bus atvaizduojami duomenys is susijusios lenteles --}}
+<form action="/zmogus" method="post">
+  {{#if zmogus}}
+  <input type="hidden" name="id" value="{{zmogus.id}}">
+  {{/if}}
+  <label for="vardas">Vardas:</label><input type="text" id="vardas" name="vardas" value="{{zmogus.vardas}}"><br>
+  <label for="pavarde">Pavardė:</label><input type="text" id="pavarde" name="pavarde" value="{{zmogus.pavarde}}"><br>
+  <label for="gimData">Gimimo data:</label><input type="date" id="gimData" name="gimData" value="{{dateFormat zmogus.gim_data}}"><br>
+  <label for="alga">Alga:</label><input type="number" name="alga" id="alga" value="{{zmogus.alga}}"><br>
+
+  {{!-- <input class="form-button" type="submit" value="Saugoti"> --}}
+  <button class="form-button" type="submit">Saugoti</button>
+  {{!-- <a href="/zmones">Cancel</a> --}}
+  <form method="get" action="/zmones">
+        <button class="form-button" type="submit">Atšaukti</button>
+  </form>
+</form>
+
+{{!-- SUSIJUSIOS LENTELES DUOMENYS --}}
+{{#if zmogus}}
+<h1>Adresai:</h1>
+<a class="button" href="/adresas?zmogusId={{zmogus.id}}">Naujas adresas</a>
+{{/if}}
+{{#if adresai}}
+<table>
+  {{!-- lenteles headerio formavimas --}}
+  <tr>
+    <th>Adresas</th>
+    <th>Miestas</th>
+    <th>Valstybė</th>
+    <th>Pašto kodas</th>
+  </tr>
+  {{!-- lenteles eiluciu formavimas --}}
+  {{#each adresai}}
+  <tr>
+    <td><a href="/adresas/{{id}}">{{adresas}}</a></td>
+    <td><a href="/adresas/{{id}}">{{miestas}}</a></td>
+    <td><a href="/adresas/{{id}}">{{valstybe}}</a></td>
+    <td><a href="/adresas/{{id}}">{{pasto_kodas}}</a></td>
+    <td><a href="/adresas/{{id}}/del">X</a></td>
+  </tr>
+  {{/each}}
+</table>
+{{/if}}
+
+{{!-- SUSIJUSIOS LENTELES DUOMENYS --}}
+{{#if zmogus}}
+<h1>Kontaktai:</h1>
+<a class="button" href="/kontaktas?zmogusId={{zmogus.id}}">Naujas kontaktas</a>
+{{/if}}
+{{#if kontaktai}}
+<table>
+  {{!-- lenteles headerio formavimas --}}
+  <tr>
+    <th>Tipas</th>
+    <th>Reikšmė</th>
+  </tr>
+  {{!-- lenteles eiluciu formavimas --}}
+  {{#each kontaktai}}
+  <tr>
+    <td><a href="/kontaktas/{{id}}">{{tipas}}</a></td>
+    <td><a href="/kontaktas/{{id}}">{{reiksme}}</a></td>
+    <td><a href="/kontaktas/{{id}}/del">X</a></td>
+  </tr>
+  {{/each}}
+</table>
+{{/if}}

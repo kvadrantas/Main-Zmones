@@ -1,0 +1,24 @@
+<h1>Žmonių sąrašas</h1>
+{{!-- <a href="/zmogus">Naujas</a> --}}
+<form method="get" action="/zmogus">
+        <button type="submit">Naujas žmogus</button>
+</form>
+
+<table>
+  <tr>
+    <th>Vardas</th>
+    <th>Pavardė</th>
+    <th>Gimimo data</th>
+    <th>alga</th>
+  </tr>
+  {{#each zmones}}
+  <tr>
+    <td><a href="/zmogus/{{id}}">{{vardas}}</a></td>
+    <td><a href="/zmogus/{{id}}">{{pavarde}}</a></td>
+    <td>{{dateFormat gim_data}}</td>
+    <td>{{alga}}</td>
+    <td><a href="/zmogus/{{id}}/del">X</a></td>
+  </tr>  
+  {{/each}}
+</table>
+<a href="/">Pagrindinis</a>

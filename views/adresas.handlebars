@@ -1,0 +1,22 @@
+<form action="/adresas" method="post">
+  {{#if adresas}}
+  <input type="hidden" name="id" value="{{adresas.id}}">
+  <input type="hidden" name="zmogusId" value="{{adresas.zmones_id}}">
+  {{/if}}
+  {{#if zmogusId}}
+  <input type="hidden" name="zmogusId" value="{{zmogusId}}">
+    <input type="hidden" name="zmogusId" value="{{adresas.zmones_id}}">
+
+  {{/if}}
+    <input type="hidden" name="zmogusId" value="{{zmogusId}}">
+    <input type="hidden" name="zmogusId" value="{{adresas.zmones_id}}">
+  Adresas: <input type="text" name="adresas" value="{{adresas.adresas}}"><br>
+  Miestas: <input type="text" name="miestas" value="{{adresas.miestas}}"><br>
+  Valstybė: <input type="text" name="valstybe" value="{{adresas.valstybe}}"><br>
+  Pašto kodas: <input type="text" name="pastoKodas" value="{{adresas.pasto_kodas}}"><br>
+
+  <input type="submit" value="Saugoti">
+  <a href="/zmogus/{{adresas.zmones_id}}">Cancel</a>
+</form>
+
+
