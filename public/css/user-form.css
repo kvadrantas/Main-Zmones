@@ -42,15 +42,24 @@ aaa {
     float: left;
 }
 
-.right-pane {
-    
+.left-pane {
+    margin-right: 100px;
 }
 
 /* asmenine informacija */
 /* gyvenamoji vieta/kontaktai */
 
 @media (max-width: 1000px) {
-    .right-pane {
-        margin-left: 100px;
+    .left-pane .right-pane {
+        display: block;
     }
+}
+
+@media (max-width: 470px) {
+    label {
+        text-align: left;
+   }
+   td {
+       padding: 5px 5px;
+   }
 }
