@@ -290,9 +290,11 @@ app.get("/adresas/:id?", async (req, res) => {
             res.redirect("/zmones");
         }
     } else {
+        const zmogusId = parseInt(req.query.zmogusId);
+
         // Jei id nenurodytas vadinasi tai bus
         // naujo iraso ivedimas
-        res.render("adresas");
+        res.render("adresas", { zmogusId });
     }
 });
 
@@ -302,7 +304,6 @@ app.post("/adresas", async (req, res) => {
         // id yra -> irasa redaguojam
         // id nera -> kuriam nauja irasa
         const id = parseInt(req.body.id);
-        console.log('update ', req.body.adresas, req.body.miestas, req.body.valstybe, req.body.pastoKodas, id);
 
         if (
             // tikrinam duomenu teisinguma
@@ -337,8 +338,8 @@ app.post("/adresas", async (req, res) => {
         } 
     } else {
         // jei nera id, kuriam nauja irasa
-        const zmogusId = parseInt(req.params.zmogusId);
-        console.log(req.body.adresas, req.body.miestas, req.body.valstybe, req.body.pastoKodas, req.params.zmogusId);
+        const zmogusId = parseInt(req.body.zmogusId);
+ 
         if (
             !isNaN(zmogusId) &&
             typeof req.body.adresas === "string" &&
@@ -347,16 +348,17 @@ app.post("/adresas", async (req, res) => {
             req.body.miestas.trim() !== "" &&
             typeof req.body.valstybe === "string" &&
             req.body.valstybe.trim() !== "" &&
-            typeof req.body.pasto_kodas === "string" &&
-            req.body.pasto_kodas.trim() !== ""
+            typeof req.body.pastoKodas === "string" &&
+            req.body.pastoKodas.trim() !== ""
         ) {
+            console.log('PATIKRINIMAS PRAEJO ', zmogusId);
             let conn;
             try {
                 conn = await connect();
                 await query(
                     conn,
                     `
-                    insert into zmones
+                    insert into adresai
                     (adresas, miestas, valstybe, pasto_kodas, zmones_id)
                     values (?, ?, ?, ?, ?)`,
                     [req.body.adresas, req.body.miestas, req.body.valstybe, req.body.pastoKodas, zmogusId],
