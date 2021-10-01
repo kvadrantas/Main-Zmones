@@ -235,7 +235,7 @@ app.get("/zmogus/:id/del", async (req, res) => {
           [id],
         );
       } catch (err) {
-        // ivyko klaida gaunant trinant irasa is DB
+        // ivyko klaida trinant irasa is DB
         res.render("klaida", { err });
         return;
       } finally {
@@ -351,7 +351,6 @@ app.post("/adresas", async (req, res) => {
             typeof req.body.pastoKodas === "string" &&
             req.body.pastoKodas.trim() !== ""
         ) {
-            console.log('PATIKRINIMAS PRAEJO ', zmogusId);
             let conn;
             try {
                 conn = await connect();
@@ -374,3 +373,70 @@ app.post("/adresas", async (req, res) => {
     }
     res.redirect("/zmogus/" + req.body.zmogusId);
 });
+
+// IRASO TRYNIMAS
+// app.get("/adresas/:id/del", async (req, res) => {
+//     const id = parseInt(req.params.id);
+//     // if (!isNaN(id)) {
+//     //   let conn;
+//     //   try {
+//     //     conn = await connect();
+//     //     await query(
+//     //       conn,
+//     //       `
+//     //         delete from adresai
+//     //         where id = ?`,
+//     //       [id],
+//     //     );
+//     //   } catch (err) {
+//     //     // ivyko klaida trinant irasa is DB
+//     //     res.render("klaida", { err });
+//     //     return;
+//     //   } finally {
+//     //     await end(conn);
+//     //   }
+//     // }
+//     console.log(req.body.id, req.body.zmogusId, req.params.id);
+//     // res.redirect("/zmogus/" + req.body.Id);
+// });
+
+app.get("/adresas/:id/del", async (req, res) => {
+    const id = parseInt(req.params.id);
+    let zmogusId;
+    if (!isNaN(id)) {
+      let conn;
+      try {
+        conn = await connect();
+        const { results: adresai } = await query(
+          conn,
+          `
+          select
+            zmones_id as zmogusId
+          from adresai
+          where id = ?`,
+          [id],
+        );
+        if (adresai.length > 0) {
+          zmogusId = adresai[0].zmogusId;
+          await query(
+            conn,
+            `
+              delete from adresai
+              where id = ?`,
+            [id],
+          );
+        }
+      } catch (err) {
+        // ivyko klaida trinant duomenis
+        res.render("klaida", { err });
+        return;
+      } finally {
+        await end(conn);
+      }
+    }
+    if (zmogusId) {
+      res.redirect("/zmogus/" + zmogusId);
+    } else {
+      res.redirect("/zmones");
+    }
+  });

@@ -5,6 +5,7 @@
   {{#if zmogus}}
   <input type="hidden" name="id" value="{{zmogus.id}}">
   {{/if}}
+  
   <label for="vardas">Vardas:</label><input type="text" id="vardas" name="vardas" value="{{zmogus.vardas}}"><br>
   <label for="pavarde">Pavardė:</label><input type="text" id="pavarde" name="pavarde" value="{{zmogus.pavarde}}"><br>
   <label for="gimData">Gimimo data:</label><input type="date" id="gimData" name="gimData" value="{{dateFormat zmogus.gim_data}}"><br>
