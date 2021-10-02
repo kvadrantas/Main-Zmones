@@ -8,7 +8,15 @@
   <input type="hidden" name="zmogusId" value="{{zmogusId}}">
   {{/if}}
 
-<label for="tipas">Tipas:</label><input id="tipas" type="text" name="tipas" value="{{kontaktas.tipas}}"><br>
+<label for="tipas">Tipas:</label>
+<select id="tipas" name="tipas">
+  <option value="email">email</option>
+  <option value="mob">mob</option>
+  <option value="Facebook">Facebook</option>
+  <option value="LinkedIn">LinkedIn</option>
+</select><br>
+
+{{!-- <input id="tipas" type="text" name="tipas" value="{{kontaktas.tipas}}"><br> --}}
 <label for="reiksme">Reikšmė:</label><input id="reiksme" type="text" name="reiksme" value="{{kontaktas.reiksme}}"><br>
 
   {{!-- <input type="submit" value="Saugoti"> --}}
