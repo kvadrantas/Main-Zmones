@@ -603,3 +603,23 @@ app.get("/kontaktas/:id/del", async (req, res) => {
     }
   });
   
+// TOP 3 ATLYGINIMAI
+app.use("/report/topAtlyginimai", async (req, res) => {
+    let conn;
+    try {
+      conn = await connect();
+      const { results: ataskaita } = await query(
+        conn,
+        `
+        SELECT vardas, pavarde, gim_data, alga 
+            FROM zmones
+            order by alga desc limit 3`
+      );
+      res.render("reports/topAtlyginimai", { ataskaita });
+    } catch (err) {
+      res.render("klaida", { err });
+    } finally {
+      await end(conn);
+    }
+  });
+  

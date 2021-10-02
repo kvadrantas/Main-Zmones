@@ -17,12 +17,19 @@
     <form method="get" action="/zmogus">
         <button type="submit">Naujas žmogus</button>
     </form>
-        <form method="get" action="/zmogus">
+        <form method="get" action="/report/pagalMiestus">
         <button type="submit">Ataskaitos</button>
     </form>
     {{#if zmogus}}
     <a class="button" href="/adresas?zmogusId={{zmogus.id}}">Naujas adresas</a>
     <a class="button" href="/kontaktas?zmogusId={{zmogus.id}}">Naujas kontaktas</a>
+    {{/if}}
+    {{#if ataskaita}}
+    <div class="top-navigation">
+      <a class="button" href="/report/pagalMiestus">Pagal miestus</a>
+      <a class="button" href="/report/topAtlyginimai">Top 3 atlyginimai</a>
+      <a class="button" href="/report/pagalGimData">Pagal gimimo datą</a>
+    </div>
     {{/if}}
 </div>
 
