@@ -578,3 +578,28 @@ app.get("/kontaktas/:id/del", async (req, res) => {
       res.redirect("/zmones");
     }
   });
+
+// *****************************************************************************
+// ****************************** ATASKAITOS ***********************************
+// *****************************************************************************
+
+// ZMONES PAGAL MIESTUS
+  app.use("/report/pagalMiestus", async (req, res) => {
+    let conn;
+    try {
+      conn = await connect();
+      const { results: ataskaita } = await query(
+        conn,
+        `
+        SELECT miestas, count(*) as viso
+            FROM zmones left join adresai on zmones.id = adresai.zmones_id
+            group by miestas`
+      );
+      res.render("reports/pagalMiestus", { ataskaita });
+    } catch (err) {
+      res.render("klaida", { err });
+    } finally {
+      await end(conn);
+    }
+  });
+  
