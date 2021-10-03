@@ -73,8 +73,8 @@ app.get("/zmones", async (req, res) => {
             `
       select
         id, pavarde, vardas, gim_data, alga
-      from zmones
-      order by
+        from zmones
+        order by
         pavarde`,
         );
         res.render("zmones", { zmones, visizmonesBtn: true });
@@ -87,6 +87,7 @@ app.get("/zmones", async (req, res) => {
 
 // VIENO IRASO HTML FORMOS GENERAVIMAS
 app.get("/zmogus/:id?", async (req, res) => {
+    try {
     // Tikriname ar yra perduotas id parametras.
     // id yra -> senas irasas ir forma uzpildom iraso duomenimis
     // id nera -> naujas irasas, formos laukai pateikiami tusti
@@ -101,8 +102,8 @@ app.get("/zmogus/:id?", async (req, res) => {
                     `
         select
             id, pavarde, vardas, gim_data, alga
-        from zmones
-        where id = ?`,
+            from zmones
+            where id = ?`,
                     [id],
                 );
                 if (zmogus.length > 0) {
@@ -113,9 +114,9 @@ app.get("/zmogus/:id?", async (req, res) => {
                         `
             select
                 adresai.id, adresas, miestas, valstybe, pasto_kodas
-            from adresai left join zmones on zmones.id = adresai.zmones_id
-            where zmones.id = ?
-            order by adresas`,
+                from adresai left join zmones on zmones.id = adresai.zmones_id
+                where zmones.id = ?
+                order by adresas`,
                         [zmogus[0].id],
                     );
                     const { results: kontaktai } = await query(
@@ -123,16 +124,17 @@ app.get("/zmogus/:id?", async (req, res) => {
                         `
             select
                 kontaktai.id, tipas, reiksme
-            from kontaktai left join zmones on zmones.id = kontaktai.zmones_id
-            where zmones.id = ?
-            order by tipas`,
+                from kontaktai left join zmones on zmones.id = kontaktai.zmones_id
+                where zmones.id = ?
+                order by tipas`,
                         [zmogus[0].id],
                     );
                     res.render("zmogus", { zmogus: zmogus[0], adresai, kontaktai });
                 } else {
                     // Jei pagrindinis irasas nerastas permetam i visu irasu sarasa
                     // o galim parodyt klaidos forma, kad pagal id irasas nerastas
-                    res.redirect("/zmones");
+                    throw 'Paglal nurodytą ID įrašas nerastas!';
+                    // res.redirect("/zmones");
                 }
             } catch (err) {
                 // ivyko klaida gaunant duomenis
@@ -143,7 +145,8 @@ app.get("/zmogus/:id?", async (req, res) => {
         } else {
             // Jei id buvo nurodytas ne skaicius permetam i visu irasu sarasa
             // o galim parodyt klaidos forma, kad id negali buti stringas
-            res.redirect("/zmones");
+            throw 'Nurodytas blogas ID. ID negali būti tekstas!';
+            // res.redirect("/zmones");
         }
     } else {
         // Jei id nenurodytas vadinasi tai bus
@@ -151,6 +154,10 @@ app.get("/zmogus/:id?", async (req, res) => {
         // const active = true;
         res.render("zmogus", {naujaszmogusBtn: true});
     }
+}
+catch(err) {
+    res.render('klaida', { err });
+}
 });
 
 // IRASO SAUGOJIIMAS
@@ -252,6 +259,7 @@ app.get("/zmogus/:id/del", async (req, res) => {
 
 // VIENO IRASO HTML FORMOS GENERAVIMAS
 app.get("/adresas/:id?", async (req, res) => {
+    try {
     // Tikriname ar yra perduotas id parametras.
     // id yra -> senas irasas ir forma uzpildom iraso duomenimis
     // id nera -> naujas irasas, formos laukai pateikiami tusti
@@ -266,8 +274,8 @@ app.get("/adresas/:id?", async (req, res) => {
                     `
                     select
                         id, zmones_id, adresas, miestas, valstybe, pasto_kodas
-                    from adresai
-                    where id = ?`,
+                        from adresai
+                        where id = ?`,
                     [id],
                 );
                 if (adresas.length > 0) {
@@ -277,7 +285,8 @@ app.get("/adresas/:id?", async (req, res) => {
                 } else {
                     // Jei pagrindinis irasas nerastas permetam i visu irasu sarasa
                     // o galim parodyt klaidos forma, kad pagal id irasas nerastas
-                    res.redirect("/zmones");
+                    throw 'Paglal nurodytą ID įrašas nerastas!';
+                    // res.redirect("/zmones");
                 }
             } catch (err) {
                 // ivyko klaida gaunant duomenis
@@ -288,7 +297,8 @@ app.get("/adresas/:id?", async (req, res) => {
         } else {
             // Jei id buvo nurodytas ne skaicius permetam i visu irasu sarasa
             // o galim parodyt klaidos forma, kad id negali buti stringas
-            res.redirect("/zmones");
+            throw 'Nurodytas blogas ID. ID negali būti tekstas!';
+            // res.redirect("/zmones");
         }
     } else {
         const zmogusId = parseInt(req.query.zmogusId);
@@ -297,6 +307,9 @@ app.get("/adresas/:id?", async (req, res) => {
         // naujo iraso ivedimas
         res.render("adresas", { zmogusId, adresasBtn: true,  showBtn: true });
     }
+} catch(err) {
+    res.render('klaida', { err });
+}
 });
 
 // IRASO SAUGOJIIMAS
@@ -423,6 +436,7 @@ app.get("/adresas/:id/del", async (req, res) => {
 
 // VIENO IRASO HTML FORMOS GENERAVIMAS
 app.get("/kontaktas/:id?", async (req, res) => {
+    try {
     // Tikriname ar yra perduotas id parametras.
     // id yra -> senas irasas ir forma uzpildom iraso duomenimis
     // id nera -> naujas irasas, formos laukai pateikiami tusti
@@ -437,8 +451,8 @@ app.get("/kontaktas/:id?", async (req, res) => {
                     `
                     select
                         id, zmones_id, tipas, reiksme
-                    from kontaktai
-                    where id = ?`,
+                        from kontaktai
+                        where id = ?`,
                     [id],
                 );
                 if (kontaktas.length > 0) {
@@ -448,7 +462,8 @@ app.get("/kontaktas/:id?", async (req, res) => {
                 } else {
                     // Jei pagrindinis irasas nerastas permetam i visu irasu sarasa
                     // o galim parodyt klaidos forma, kad pagal id irasas nerastas
-                    res.redirect("/zmones");
+                    throw 'Paglal nurodytą ID įrašas nerastas!';
+                    // res.redirect("/zmones");
                 }
             } catch (err) {
                 // ivyko klaida gaunant duomenis
@@ -459,7 +474,8 @@ app.get("/kontaktas/:id?", async (req, res) => {
         } else {
             // Jei id buvo nurodytas ne skaicius permetam i visu irasu sarasa
             // o galim parodyt klaidos forma, kad id negali buti stringas
-            res.redirect("/zmones");
+            throw 'Nurodytas blogas ID. ID negali būti tekstas!';
+            // res.redirect("/zmones");
         }
     } else {
         const zmogusId = parseInt(req.query.zmogusId);
@@ -468,6 +484,9 @@ app.get("/kontaktas/:id?", async (req, res) => {
         // naujo iraso ivedimas
         res.render("kontaktas", { zmogusId, kontaktasBtn: true, showBtn: true });
     }
+} catch(err) {
+    res.render('klaida', { err });
+}
 });
 
 // IRASO SAUGOJIIMAS

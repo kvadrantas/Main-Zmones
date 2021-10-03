@@ -9,6 +9,10 @@ label {
     font: normal 15px/22px Helvetica, Arial, sans-serif;
 }
 
+label span {
+    color: red;
+}
+
 input, select {
     height: 24px;
     width: 300px;
@@ -43,6 +47,7 @@ aaa {
     display: inline-block;
     padding: 13px 15px;
     border-radius: 3px;
+    text-decoration: none;
 }
 
 .left-pane, .right-pane {

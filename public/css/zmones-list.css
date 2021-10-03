@@ -22,6 +22,12 @@ h2 {
     width: 300px;
 }
 
+h3 {
+    font: normal 15px/18px Helvetica, Arial, sans-serif;
+    font-style: italic;
+    margin-bottom: 40px;
+}
+
 .top-navigation {
     display: inline-block;
     width: 100%;

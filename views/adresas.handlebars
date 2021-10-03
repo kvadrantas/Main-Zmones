@@ -8,17 +8,17 @@
   <input type="hidden" name="zmogusId" value="{{zmogusId}}">
   {{/if}}
 
-<label for="adresas">Adresas:</label><input id="adresas" type="text" name="adresas" value="{{adresas.adresas}}"><br>
-<label for="miestas">Miestas:</label><input id="miestas" type="text" name="miestas" value="{{adresas.miestas}}"><br>
-<label for="valstybe">Valstybė:</label><input id="valstybe" type="text" name="valstybe" value="{{adresas.valstybe}}"><br>
+<label for="adresas">Adresas<span>*</span></label><input required id="adresas" type="text" name="adresas" value="{{adresas.adresas}}"><br>
+<label for="miestas">Miestas<span>*</span></label><input required id="miestas" type="text" name="miestas" value="{{adresas.miestas}}"><br>
+<label for="valstybe">Valstybė<span>*</span></label><input required id="valstybe" type="text" name="valstybe" value="{{adresas.valstybe}}"><br>
 <label class="hidden" for="pastoKodas">Pašto kodas:</label><input class="hidden" id="pastoKodas" type="text" name="pastoKodas" value="{{adresas.pasto_kodas}}"><br>
 
   {{!-- <input type="submit" value="Saugoti"> --}}
   <button class="form-button" type="submit">Saugoti</button>
-  {{!-- <a href="/zmogus/{{adresas.zmones_id}}">Cancel</a> --}}
-  <form method="get" action="/zmogus/{{adresas.zmones_id}}">
+  <a class="form-button" href="/zmogus/{{zmogusId}}">Atšaukti</a>
+  {{!-- <form method="get" action="/zmogus/{{adresas.zmones_id}}">
         <button class="form-button" type="submit">Atšaukti</button>
-  </form>
+  </form> --}}
 </form>
 
 
