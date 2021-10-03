@@ -77,7 +77,7 @@ app.get("/zmones", async (req, res) => {
       order by
         pavarde`,
         );
-        res.render("zmones", { zmones });
+        res.render("zmones", { zmones, visizmonesBtn: true });
     } catch (err) {
         res.render("klaida", { err });
     } finally {
@@ -148,7 +148,8 @@ app.get("/zmogus/:id?", async (req, res) => {
     } else {
         // Jei id nenurodytas vadinasi tai bus
         // naujo iraso ivedimas
-        res.render("zmogus");
+        // const active = true;
+        res.render("zmogus", {naujaszmogusBtn: true});
     }
 });
 
@@ -272,7 +273,7 @@ app.get("/adresas/:id?", async (req, res) => {
                 if (adresas.length > 0) {
                     // pasitikrinam ar gavom norima irasa ir jei taip salia formuojam tentele
                     // is susijusios lenteles irasu
-                    res.render("adresas", { adresas: adresas[0] });
+                    res.render("adresas", { adresas: adresas[0], adresasBtn: false,  showBtn: true });
                 } else {
                     // Jei pagrindinis irasas nerastas permetam i visu irasu sarasa
                     // o galim parodyt klaidos forma, kad pagal id irasas nerastas
@@ -294,7 +295,7 @@ app.get("/adresas/:id?", async (req, res) => {
 
         // Jei id nenurodytas vadinasi tai bus
         // naujo iraso ivedimas
-        res.render("adresas", { zmogusId });
+        res.render("adresas", { zmogusId, adresasBtn: true,  showBtn: true });
     }
 });
 
@@ -443,7 +444,7 @@ app.get("/kontaktas/:id?", async (req, res) => {
                 if (kontaktas.length > 0) {
                     // pasitikrinam ar gavom norima irasa ir jei taip salia formuojam tentele
                     // is susijusios lenteles irasu
-                    res.render("kontaktas", { kontaktas: kontaktas[0] });
+                    res.render("kontaktas", { kontaktas: kontaktas[0], kontaktasBtn: false,  showBtn: true });
                 } else {
                     // Jei pagrindinis irasas nerastas permetam i visu irasu sarasa
                     // o galim parodyt klaidos forma, kad pagal id irasas nerastas
@@ -465,7 +466,7 @@ app.get("/kontaktas/:id?", async (req, res) => {
 
         // Jei id nenurodytas vadinasi tai bus
         // naujo iraso ivedimas
-        res.render("kontaktas", { zmogusId });
+        res.render("kontaktas", { zmogusId, kontaktasBtn: true, showBtn: true });
     }
 });
 
@@ -595,7 +596,7 @@ app.get("/kontaktas/:id/del", async (req, res) => {
             FROM zmones left join adresai on zmones.id = adresai.zmones_id
             group by miestas`
       );
-      res.render("reports/pagalMiestus", { ataskaita });
+      res.render("reports/pagalMiestus", { ataskaita, pagalmiestusBtn: true });
     } catch (err) {
       res.render("klaida", { err });
     } finally {
@@ -615,7 +616,37 @@ app.use("/report/topAtlyginimai", async (req, res) => {
             FROM zmones
             order by alga desc limit 3`
       );
-      res.render("reports/topAtlyginimai", { ataskaita });
+      res.render("reports/topAtlyginimai", { ataskaita, top3Btn: true });
+    } catch (err) {
+      res.render("klaida", { err });
+    } finally {
+      await end(conn);
+    }
+  });
+  
+// PAGAL GIMIMO DATA
+app.use("/report/pagalGimData", async (req, res) => {
+    let nuo = new Date(req.body.nuo);
+    if (isNaN(nuo.getTime())) {
+      nuo = new Date("0001-01-01");
+    }
+    let iki = new Date(req.body.iki);
+    if (isNaN(iki.getTime())) {
+      iki = new Date("9999-12-31");
+    }
+    let conn;
+    try {
+      conn = await connect();
+      const { results: ataskaita } = await query(
+        conn,
+        `
+        SELECT vardas, pavarde, gim_data, alga 
+            FROM zmones
+            where gim_data >= ? and gim_data <= ?
+            order by gim_data`,
+        [nuo, iki],
+      );
+      res.render("reports/pagalGimData", { ataskaita, nuo, iki, pagaldataBtn: true });
     } catch (err) {
       res.render("klaida", { err });
     } finally {
