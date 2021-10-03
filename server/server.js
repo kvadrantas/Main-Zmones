@@ -53,11 +53,12 @@ app.engine(
 
 app.set('view engine', 'handlebars');
 // *****************************************************************************
-// IMPORT MYSQL 
+// MYSQL IMPORT
 import { connect, end, query } from "./db.js";
+
 // *****************************************************************************
-
-
+// DATA VALIDATION IMPORT
+import {hasSpecChar} from './dataValidation.js'
 
 // *****************************************************************************
 // ***************************** LENTELE ZMONES ********************************
