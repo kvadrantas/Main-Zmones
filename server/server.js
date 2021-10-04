@@ -194,35 +194,14 @@ catch(err) {
 
 // IRASO SAUGOJIIMAS
 app.post("/zmogus", async (req, res) => {
+    const id = parseInt(req.body.id);
     if (req.body.id) {
         // id yra -> irasa redaguojam
         // id nera -> kuriam nauja irasa
-        // const id = parseInt(req.body.id);
-        // const vardas = req.body.vardas;
-        // const pavarde = req.body.pavarde;
-        // const gimData = new Date(req.body.gimData);
-        // const alga = parseFloat(req.body.alga);
-        // if (typeof vardas !== 'string' || vardas.trim() === '' || hasSpecChar(vardas)) {
-        //     throw 'Vardas negali būti tuščias arba turėti spec simbolių ar skaičių!';
-        // } else if (typeof pavarde !== 'string' || pavarde.trim()  == '' || hasSpecChar(pavarde)) {
-        //     throw 'Pavardė negali būti tuščia arba turėti spec simbolių ar skaičių!';
-        // } else if (!isFinite((gimData).getTime())) {
-        //     throw 'Blogai nurodyta gimimo data!';
-        // } else if(isFinite(alga)) 
-
-        
-        if (
-            // tikrinam duomenu teisinguma
-            !isNaN(id) && dataIsValid
-            // typeof req.body.vardas === "string" &&
-            // req.body.vardas.trim() !== "" &&
-            // typeof req.body.pavarde === "string" &&
-            // req.body.pavarde.trim() !== "" &&
-            // isFinite((gimData).getTime()) &&
-            // isFinite(req.body.alga) && req.body.alga >= 0
-        ) 
+        const {dataIsValidd, alga} = dataIsValid(req.body.vardas, req.body.pavarde, new Date(req.body.gimData), req.body.alga);
+        // tikrinam duomenu teisinguma
+        if (!isNaN(id) && dataIsValidd) 
         {
-            prompt('VISKAS GERAI')
             let conn;
             try {
                 conn = await connect();
@@ -232,7 +211,7 @@ app.post("/zmogus", async (req, res) => {
                     update zmones
                     set vardas = ? , pavarde = ?, gim_data = ?, alga = ?
                     where id = ?`,
-                    [req.body.vardas, req.body.pavarde, new Date(req.body.gimData), req.body.alga, id],
+                    [req.body.vardas, req.body.pavarde, new Date(req.body.gimData), alga, id],
                 );
             } catch (err) {
                 // ivyko klaida skaitant duomenis is DB
@@ -241,8 +220,12 @@ app.post("/zmogus", async (req, res) => {
             } finally {
                 await end(conn);
             }
-        } 
+        } else {
+            // res.render('klaida', {  })
+            console.log('NETEISINGI DUOMENYS');
+        }
     } else {
+        
         // jei nera id, kuriam nauja irasa
         if (
             typeof req.body.vardas === "string" &&
