@@ -6,7 +6,7 @@
   <input type="hidden" name="id" value="{{zmogus.id}}">
   {{/if}}
   
-  <label for="vardas">Vardas<span>*</span></label><input required type="text" id="vardas" name="vardas" value="{{zmogus.vardas}}"><br>
+  <label for="vardas">Vardas<span>*</span></label><input required onfocusout="" type="text" id="vardas" name="vardas" value="{{zmogus.vardas}}"><br>
   <label for="pavarde">Pavardė<span>*</span></label><input required type="text" id="pavarde" name="pavarde" value="{{zmogus.pavarde}}"><br>
   <label for="gimData">Gimimo data<span>*</span></label><input required type="date" id="gimData" name="gimData" value="{{dateFormat zmogus.gim_data}}"><br>
   <label for="alga">Alga:</label><input type="number" name="alga" id="alga" value="{{zmogus.alga}}"><br>

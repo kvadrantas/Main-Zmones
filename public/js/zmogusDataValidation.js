@@ -1,10 +1,10 @@
 // *****************************************************************************
 // DATA VALIDATION IMPORT
-import {hasSpecChar} from './dataValidation.js'
+// import {hasSpecChar} from './'
 // *****************************************************************************
 
 
-        const vardas = document.getElementById('vardas').nodeValue;
+        // const vardas = document.getElementById('vardas').value;
         // const pavarde = req.body.pavarde;
         // const gimData = new Date(req.body.gimData);
         // const alga = parseFloat(req.body.alga);
@@ -16,4 +16,3 @@ import {hasSpecChar} from './dataValidation.js'
         //     throw 'Blogai nurodyta gimimo data!';
         // } else if(isFinite(alga)) 
 
-        console.log(vardas);
