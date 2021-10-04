@@ -85,6 +85,7 @@ app.set('view engine', 'handlebars');
 // *****************************************************************************
 // MYSQL IMPORT
 import { connect, end, query } from "./db.js";
+import { dataIsValid } from "./serverSideDataValidation.js";
 
 // *****************************************************************************
 // DATA VALIDATION IMPORT
@@ -212,7 +213,7 @@ app.post("/zmogus", async (req, res) => {
         
         if (
             // tikrinam duomenu teisinguma
-            !isNaN(id)
+            !isNaN(id) && dataIsValid
             // typeof req.body.vardas === "string" &&
             // req.body.vardas.trim() !== "" &&
             // typeof req.body.pavarde === "string" &&
