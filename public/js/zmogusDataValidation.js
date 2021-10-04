@@ -16,3 +16,12 @@
         //     throw 'Blogai nurodyta gimimo data!';
         // } else if(isFinite(alga)) 
 
+        function hasSpecChar(string) {
+            // functions checks is string has any unallowed characters from specChars list
+            const vardas = document.getElementById('vardas').value;
+            const specChars = /[!"#$%&'()*+,-./0123456789:;<=>?@[\]^_`{|}~€‚„†‡‰‹¨ˇ¸‘’“”•–—™›¯˛¢£¤¦§Ø©Ŗ«¬®Æ°±²³´µ¶·ø¹ŗ»¼½¾æ÷˙]/;
+            if (specChars.test(string)) prompt('Vardas negali būti tuščias arba turėti spec simbolių ar skaičių!');
+            // return specChars.test(string);
+        }
+        
+        // export { hasSpecChar };
