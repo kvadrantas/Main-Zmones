@@ -9,9 +9,9 @@
   {{/if}}
 
 <label for="adresas">Adresas<span>*</span></label><input required id="adresas" type="text" name="adresas" value="{{adresas.adresas}}"><br>
-<label for="miestas">Miestas<span>*</span></label><input required id="miestas" type="text" name="miestas" value="{{adresas.miestas}}"><br>
-<label for="valstybe">Valstybė<span>*</span></label><input required id="valstybe" type="text" name="valstybe" value="{{adresas.valstybe}}"><br>
-<label class="hidden" for="pastoKodas">Pašto kodas:</label><input class="hidden" id="pastoKodas" type="text" name="pastoKodas" value="{{adresas.pasto_kodas}}"><br>
+<label for="miestas">Miestas<span>*</span></label><input required onfocusout="hasSpecChar('miestas', 'Miestas')" id="miestas" type="text" name="miestas" value="{{adresas.miestas}}"><br>
+<label for="valstybe">Šalies kodas<span>*</span></label><input required onfocusout="hasSpecChar('valstybe', 'Šalies kodas')" maxlength="3" id="valstybe" type="text" name="valstybe" value="{{adresas.valstybe}}"><br>
+<label class="hidden" for="pastoKodas">Pašto kodas<span>*</span></label><input class="hidden" id="pastoKodas" type="text" name="pastoKodas" value="{{adresas.pasto_kodas}}"><br>
 
   {{!-- <input type="submit" value="Saugoti"> --}}
   <button class="form-button" type="submit">Saugoti</button>
@@ -20,5 +20,7 @@
         <button class="form-button" type="submit">Atšaukti</button>
   </form> --}}
 </form>
+<script src="/public/js/clientSideDataValidation.js"></script>
+
 
 
