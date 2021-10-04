@@ -88,7 +88,7 @@ import { connect, end, query } from "./db.js";
 
 // *****************************************************************************
 // DATA VALIDATION IMPORT
-import {dataIsValid} from '../public/js/zmogusDataValidation.js';
+// import {dataIsValid} from '../public/js/zmogusDataValidation.js';
 
 // *****************************************************************************
 // ***************************** LENTELE ZMONES ********************************
@@ -212,7 +212,7 @@ app.post("/zmogus", async (req, res) => {
         
         if (
             // tikrinam duomenu teisinguma
-            !isNaN(id) && dataIsValid
+            !isNaN(id)
             // typeof req.body.vardas === "string" &&
             // req.body.vardas.trim() !== "" &&
             // typeof req.body.pavarde === "string" &&

@@ -21,7 +21,7 @@ function hasSpecChar(id, name) {
     const field = document.getElementById(id).value;
     const specChars = /[!"#$%&'()*+,-./0123456789:;<=>?@[\]^_`{|}~€‚„†‡‰‹¨ˇ¸‘’“”•–—™›¯˛¢£¤¦§Ø©Ŗ«¬®Æ°±²³´µ¶·ø¹ŗ»¼½¾æ÷˙]/;
 
-    if (specChars.test(field)) alert(`${name} negali būti tuščias arba turėti spec simbolių ar skaičių!`);
+    if (specChars.test(field) || field.trim() === '') alert(`${name} negali būti tuščias(tuščia) arba turėti spec simbolių ar skaičių!`);
     console.log(vardas, specChars.test(vardas));
 }
 
@@ -52,4 +52,4 @@ function dataIsValid() {
 }
 
 
-export { dataIsValid };
+// export { dataIsValid };
