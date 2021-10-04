@@ -1,9 +1,9 @@
 import * as mysql from "mysql";
 
 const OPTIONS = {
-  host: "127.0.0.1",
+  host: "192.168.2.65",
   user: "sql_usr_zmonesDB",
-  password: "Laikinas1",
+  password: "PKUquUbdavMEu3XR",
   database: "zmones",
   multipleStatements: true,
 };

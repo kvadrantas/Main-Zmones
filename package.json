@@ -15,7 +15,10 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
     "mysql": "^2.18.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "cors": "^2.8.5",
+    "https": "^1.0.0",
+    "yarn": "^1.22.11"
   },
   "devDependencies": {
     "handlebars-helper-css": "^0.1.0"

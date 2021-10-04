@@ -21,7 +21,7 @@
 
   {{!-- <input type="submit" value="Saugoti"> --}}
   <button class="form-button" type="submit">Saugoti</button>
-  <a class="form-button" href="/zmogus/{{zmogusId}}">Atšaukti</a>
+  <a class="form-button" href="/zmogus/{{zmogusId}}{{#if kontaktas}}{{kontaktas.zmones_id}}{{/if}}">Atšaukti</a>
   {{!-- <form method="get" action="/zmogus/{{adresas.zmones_id}}">
         <button class="form-button" type="submit">Atšaukti</button>
   </form> --}}

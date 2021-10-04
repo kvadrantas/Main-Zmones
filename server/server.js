@@ -1,16 +1,46 @@
 // *****************************************************************************
+// SSL
+
+import express from "express";
+import fs from "fs";
+import https from "https";
+import cors from "cors";
+const app = express();
+const PORTS = 2949;
+const WEB = "./";
+let folder = '';
+let files = '';
+
+app.use(cors());
+app.use(express.static('./', {    // Like "Default Document" on ISS
+  index: ["index.html"]
+}));
+var privateKey = fs.readFileSync('./cert/private.key');
+var certificate = fs.readFileSync('./cert/certificate.crt');
+
+https.createServer({
+    key: privateKey,
+    cert: certificate
+}, app).listen(PORTS, function() {
+  console.log(`Server listening for https at https://rolandasseputis.lt:${PORTS}/BIT-SQL/json/filecontent:nd1.sql`)
+});
+// *****************************************************************************
+
+
+// *****************************************************************************
 // EXPRESS WEBSERVER IMPORT
 // MAIN/DEFAULT WEB SERVER PARAMETERS
-import express from "express";
-const app = express();
-const PORT = 4444;    // Sets default website port
-app.listen(PORT, () => {
-    console.log(`Example app listening at http://localhost:${PORT}`);
-});
-const WEB = "web";
-app.use(express.static(WEB, {    // Like "Default Document" on ISS
-    index: ["index.html"]
-}));
+// import express from "express";
+// const app = express();
+// const PORT = 2949;    // Sets default website port
+// app.listen(PORT, () => {
+//     console.log(`Example app listening at http://localhost:${PORT}`);
+// });
+// const WEB = "web";
+// app.use(express.static(WEB, {    // Like "Default Document" on ISS
+//     index: ["index.html"]
+// }));
+// *****************************************************************************
 
 // ADDITIONAL WEB SERVER PARAMETERS 
 // Suteikia funkcionaluma automatiskai iskaidyti URL'e esancius parametrus
@@ -167,16 +197,31 @@ app.post("/zmogus", async (req, res) => {
         // id yra -> irasa redaguojam
         // id nera -> kuriam nauja irasa
         const id = parseInt(req.body.id);
-        if (
-            // tikrinam duomenu teisinguma
-            !isNaN(id) &&
-            typeof req.body.vardas === "string" &&
-            req.body.vardas.trim() !== "" &&
-            typeof req.body.pavarde === "string" &&
-            req.body.pavarde.trim() !== "" &&
-            isFinite((new Date(req.body.gimData)).getTime()) &&
-            isFinite(req.body.alga) && req.body.alga >= 0
-        ) {
+        const vardas = req.body.vardas;
+        const pavarde = req.body.pavarde;
+        const gimData = new Date(req.body.gimData);
+        const alga = parseFloat(req.body.alga);
+        if (typeof vardas !== 'string' || vardas.trim() === '' || hasSpecChar(vardas)) {
+            throw 'Vardas negali būti tuščias arba turėti spec simbolių ar skaičių!';
+        } else if (typeof pavarde !== 'string' || pavarde.trim()  == '' || hasSpecChar(pavarde)) {
+            throw 'Pavardė negali būti tuščia arba turėti spec simbolių ar skaičių!';
+        } else if (!isFinite((gimData).getTime())) {
+            throw 'Blogai nurodyta gimimo data!';
+        } else if(isFinite(alga)) 
+
+        
+        // if (
+        //     // tikrinam duomenu teisinguma
+        //     !isNaN(id) &&
+        //     typeof req.body.vardas === "string" &&
+        //     req.body.vardas.trim() !== "" &&
+        //     typeof req.body.pavarde === "string" &&
+        //     req.body.pavarde.trim() !== "" &&
+        //     isFinite((gimData).getTime()) &&
+        //     isFinite(req.body.alga) && req.body.alga >= 0
+        // ) 
+        {
+            prompt('VISKAS GERAI')
             let conn;
             try {
                 conn = await connect();
