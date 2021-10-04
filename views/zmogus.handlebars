@@ -6,10 +6,10 @@
   <input type="hidden" name="id" value="{{zmogus.id}}">
   {{/if}}
   
-  <label for="vardas">Vardas<span>*</span></label><input required onfocusout="hasSpecChar()" type="text" id="vardas" name="vardas" value="{{zmogus.vardas}}"><br>
-  <label for="pavarde">Pavardė<span>*</span></label><input required type="text" id="pavarde" name="pavarde" value="{{zmogus.pavarde}}"><br>
+  <label for="vardas">Vardas<span>*</span></label><input required onfocusout="hasSpecChar('vardas', 'Vardas')" type="text" id="vardas" name="vardas" value="{{zmogus.vardas}}"><br>
+  <label for="pavarde">Pavardė<span>*</span></label><input required onfocusout="hasSpecChar('pavarde', 'Pavardė')" type="text" id="pavarde" name="pavarde" value="{{zmogus.pavarde}}"><br>
   <label for="gimData">Gimimo data<span>*</span></label><input required type="date" id="gimData" name="gimData" value="{{dateFormat zmogus.gim_data}}"><br>
-  <label for="alga">Alga:</label><input type="number" name="alga" id="alga" value="{{zmogus.alga}}"><br>
+  <label for="alga">Alga:</label><input onfocusout="checkAlga()" type="number" name="alga" id="alga" value="{{zmogus.alga}}"><br>
 
   {{!-- <input class="form-button" type="submit" value="Saugoti"> --}}
   <button class="form-button" type="submit">Saugoti</button>

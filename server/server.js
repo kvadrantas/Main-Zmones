@@ -88,7 +88,7 @@ import { connect, end, query } from "./db.js";
 
 // *****************************************************************************
 // DATA VALIDATION IMPORT
-import {hasSpecChar} from './dataValidation.js'
+import {dataIsValid} from '../public/js/zmogusDataValidation.js';
 
 // *****************************************************************************
 // ***************************** LENTELE ZMONES ********************************
@@ -196,30 +196,30 @@ app.post("/zmogus", async (req, res) => {
     if (req.body.id) {
         // id yra -> irasa redaguojam
         // id nera -> kuriam nauja irasa
-        const id = parseInt(req.body.id);
-        const vardas = req.body.vardas;
-        const pavarde = req.body.pavarde;
-        const gimData = new Date(req.body.gimData);
-        const alga = parseFloat(req.body.alga);
-        if (typeof vardas !== 'string' || vardas.trim() === '' || hasSpecChar(vardas)) {
-            throw 'Vardas negali būti tuščias arba turėti spec simbolių ar skaičių!';
-        } else if (typeof pavarde !== 'string' || pavarde.trim()  == '' || hasSpecChar(pavarde)) {
-            throw 'Pavardė negali būti tuščia arba turėti spec simbolių ar skaičių!';
-        } else if (!isFinite((gimData).getTime())) {
-            throw 'Blogai nurodyta gimimo data!';
-        } else if(isFinite(alga)) 
+        // const id = parseInt(req.body.id);
+        // const vardas = req.body.vardas;
+        // const pavarde = req.body.pavarde;
+        // const gimData = new Date(req.body.gimData);
+        // const alga = parseFloat(req.body.alga);
+        // if (typeof vardas !== 'string' || vardas.trim() === '' || hasSpecChar(vardas)) {
+        //     throw 'Vardas negali būti tuščias arba turėti spec simbolių ar skaičių!';
+        // } else if (typeof pavarde !== 'string' || pavarde.trim()  == '' || hasSpecChar(pavarde)) {
+        //     throw 'Pavardė negali būti tuščia arba turėti spec simbolių ar skaičių!';
+        // } else if (!isFinite((gimData).getTime())) {
+        //     throw 'Blogai nurodyta gimimo data!';
+        // } else if(isFinite(alga)) 
 
         
-        // if (
-        //     // tikrinam duomenu teisinguma
-        //     !isNaN(id) &&
-        //     typeof req.body.vardas === "string" &&
-        //     req.body.vardas.trim() !== "" &&
-        //     typeof req.body.pavarde === "string" &&
-        //     req.body.pavarde.trim() !== "" &&
-        //     isFinite((gimData).getTime()) &&
-        //     isFinite(req.body.alga) && req.body.alga >= 0
-        // ) 
+        if (
+            // tikrinam duomenu teisinguma
+            !isNaN(id) && dataIsValid
+            // typeof req.body.vardas === "string" &&
+            // req.body.vardas.trim() !== "" &&
+            // typeof req.body.pavarde === "string" &&
+            // req.body.pavarde.trim() !== "" &&
+            // isFinite((gimData).getTime()) &&
+            // isFinite(req.body.alga) && req.body.alga >= 0
+        ) 
         {
             prompt('VISKAS GERAI')
             let conn;
