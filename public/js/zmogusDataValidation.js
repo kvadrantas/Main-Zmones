@@ -19,9 +19,11 @@
         function hasSpecChar(string) {
             // functions checks is string has any unallowed characters from specChars list
             const vardas = document.getElementById('vardas').value;
+            const pavarde = document.getElementById('pavarde').value;
             const specChars = /[!"#$%&'()*+,-./0123456789:;<=>?@[\]^_`{|}~€‚„†‡‰‹¨ˇ¸‘’“”•–—™›¯˛¢£¤¦§Ø©Ŗ«¬®Æ°±²³´µ¶·ø¹ŗ»¼½¾æ÷˙]/;
-            if (specChars.test(string)) prompt('Vardas negali būti tuščias arba turėti spec simbolių ar skaičių!');
-            // return specChars.test(string);
+
+            if (specChars.test(vardas)) alert('Vardas negali būti tuščias arba turėti spec simbolių ar skaičių!');
+            console.log(vardas, specChars.test(vardas));
         }
         
         // export { hasSpecChar };
