@@ -225,16 +225,9 @@ app.post("/zmogus", async (req, res) => {
             console.log('NETEISINGI DUOMENYS');
         }
     } else {
-        
+        const {dataIsValidd, alga} = dataIsValid(req.body.vardas, req.body.pavarde, new Date(req.body.gimData), req.body.alga);
         // jei nera id, kuriam nauja irasa
-        if (
-            typeof req.body.vardas === "string" &&
-            req.body.vardas.trim() !== "" &&
-            typeof req.body.pavarde === "string" &&
-            req.body.pavarde.trim() !== "" &&
-            isFinite((new Date(req.body.gimData)).getTime()) &&
-            isFinite(req.body.alga) && req.body.alga >= 0
-        ) {
+        if (dataIsValidd) {
             let conn;
             try {
                 conn = await connect();
