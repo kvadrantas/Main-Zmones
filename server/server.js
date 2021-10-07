@@ -85,7 +85,7 @@ app.set('view engine', 'handlebars');
 // *****************************************************************************
 // MYSQL IMPORT
 import { connect, end, query, start, rollback, commit } from "./db.js";
-import { dataIsValid } from "./serverSideDataValidation.js";
+import { dataIsValid, hasSpecChar } from "./serverSideDataValidation.js";
 
 // *****************************************************************************
 // DATA VALIDATION IMPORT
@@ -194,6 +194,7 @@ catch(err) {
 
 // IRASO SAUGOJIIMAS
 app.post("/zmogus", async (req, res) => {
+    try {
     const id = parseInt(req.body.id);
     if (req.body.id) {
         // id yra -> irasa redaguojam
@@ -222,7 +223,7 @@ app.post("/zmogus", async (req, res) => {
             }
         } else {
             // res.render('klaida', {  })
-            console.log('NETEISINGI DUOMENYS');
+            throw 'Blogai nurodyti duomenys';
         }
     } else {
         const {dataIsValidd, alga} = dataIsValid(req.body.vardas, req.body.pavarde, new Date(req.body.gimData), req.body.alga);
@@ -237,7 +238,7 @@ app.post("/zmogus", async (req, res) => {
                     insert into zmones
                     (vardas, pavarde, gim_data, alga)
                     values (?, ?, ?, ?)`,
-                    [req.body.vardas, req.body.pavarde, new Date(req.body.gimData), req.body.alga],
+                    [req.body.vardas, req.body.pavarde, new Date(req.body.gimData), alga],
                 );
             } catch (err) {
                 // ivyko klaida irasant duomenis i DB
@@ -246,9 +247,14 @@ app.post("/zmogus", async (req, res) => {
             } finally {
                 await end(conn);
             }
+        } else {
+            throw 'Blogai nurodyti duomenys';
         }
     }
     res.redirect("/zmones");
+} catch(err) {
+    res.render('klaida', { err });
+}
 });
 
 // IRASO TRYNIMAS
@@ -337,6 +343,7 @@ app.get("/adresas/:id?", async (req, res) => {
 
 // IRASO SAUGOJIIMAS
 app.post("/adresas", async (req, res) => {
+    try {
     if (req.body.id) {
         // id yra -> irasa redaguojam
         // id nera -> kuriam nauja irasa
@@ -345,14 +352,10 @@ app.post("/adresas", async (req, res) => {
         if (
             // tikrinam duomenu teisinguma
             !isNaN(id) &&
-            typeof req.body.adresas === "string" &&
-            req.body.adresas.trim() !== "" &&
-            typeof req.body.miestas === "string" &&
-            req.body.miestas.trim() !== "" &&
-            typeof req.body.valstybe === "string" &&
-            req.body.valstybe.trim() !== "" &&
-            typeof req.body.pastoKodas === "string" &&
-            req.body.pastoKodas.trim() !== ""
+            typeof req.body.adresas === "string" && req.body.adresas.trim() !== "" &&
+            typeof req.body.miestas === "string" && !hasSpecChar(req.body.miestas) &&
+            typeof req.body.valstybe === "string" && !hasSpecChar(req.body.valstybe) &&
+            typeof req.body.pastoKodas === "string" && req.body.pastoKodas.trim() !== ""
         ) {
             let conn;
             try {
@@ -372,21 +375,19 @@ app.post("/adresas", async (req, res) => {
             } finally {
                 await end(conn);
             }
-        } 
+        } else {
+            throw 'Blogai nurodyti duomenys';
+        }
     } else {
         // jei nera id, kuriam nauja irasa
         const zmogusId = parseInt(req.body.zmogusId);
  
         if (
             !isNaN(zmogusId) &&
-            typeof req.body.adresas === "string" &&
-            req.body.adresas.trim() !== "" &&
-            typeof req.body.miestas === "string" &&
-            req.body.miestas.trim() !== "" &&
-            typeof req.body.valstybe === "string" &&
-            req.body.valstybe.trim() !== "" &&
-            typeof req.body.pastoKodas === "string" &&
-            req.body.pastoKodas.trim() !== ""
+            typeof req.body.adresas === "string" && req.body.adresas.trim() !== "" &&
+            typeof req.body.miestas === "string" && !hasSpecChar(req.body.miestas) &&
+            typeof req.body.valstybe === "string" && !hasSpecChar(req.body.valstybe) &&
+            typeof req.body.pastoKodas === "string" && req.body.pastoKodas.trim() !== ""
         ) {
             let conn;
             try {
@@ -406,9 +407,14 @@ app.post("/adresas", async (req, res) => {
             } finally {
                 await end(conn);
             }
+        } else {
+            throw 'Blogai nurodyti duomenys';
         }
     }
     res.redirect("/zmogus/" + req.body.zmogusId);
+} catch(err) {
+    res.render('klaida', { err });
+}
 });
 
 // IRASO TRYNIMAS
