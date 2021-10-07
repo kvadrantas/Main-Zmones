@@ -84,7 +84,7 @@ app.engine(
 app.set('view engine', 'handlebars');
 // *****************************************************************************
 // MYSQL IMPORT
-import { connect, end, query } from "./db.js";
+import { connect, end, query, start, rollback, commit } from "./db.js";
 import { dataIsValid } from "./serverSideDataValidation.js";
 
 // *****************************************************************************
