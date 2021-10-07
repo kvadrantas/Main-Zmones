@@ -206,6 +206,7 @@ app.post("/zmogus", async (req, res) => {
             let conn;
             try {
                 conn = await connect();
+                await start(conn);
                 await query(
                     conn,
                     `
@@ -214,7 +215,9 @@ app.post("/zmogus", async (req, res) => {
                     where id = ?`,
                     [req.body.vardas, req.body.pavarde, new Date(req.body.gimData), alga, id],
                 );
+                await commit(conn);
             } catch (err) {
+                await rollback(conn);
                 // ivyko klaida skaitant duomenis is DB
                 res.render("klaida", { err });
                 return;
@@ -232,6 +235,7 @@ app.post("/zmogus", async (req, res) => {
             let conn;
             try {
                 conn = await connect();
+                await start(conn);
                 await query(
                     conn,
                     `
@@ -240,7 +244,9 @@ app.post("/zmogus", async (req, res) => {
                     values (?, ?, ?, ?)`,
                     [req.body.vardas, req.body.pavarde, new Date(req.body.gimData), alga],
                 );
+                await commit(conn);
             } catch (err) {
+                await rollback(conn);
                 // ivyko klaida irasant duomenis i DB
                 res.render("klaida", { err });
                 return;
@@ -264,6 +270,7 @@ app.get("/zmogus/:id/del", async (req, res) => {
       let conn;
       try {
         conn = await connect();
+        await start(conn);
         await query(
           conn,
           `
@@ -271,7 +278,9 @@ app.get("/zmogus/:id/del", async (req, res) => {
             where id = ?`,
           [id],
         );
+        await commit(conn);
       } catch (err) {
+        await rollback(conn);
         // ivyko klaida trinant irasa is DB
         res.render("klaida", { err });
         return;
@@ -360,6 +369,7 @@ app.post("/adresas", async (req, res) => {
             let conn;
             try {
                 conn = await connect();
+                await start(conn);
                 await query(
                     conn,
                     `
@@ -368,7 +378,9 @@ app.post("/adresas", async (req, res) => {
                     where id = ?`,
                     [req.body.adresas, req.body.miestas, req.body.valstybe, req.body.pastoKodas, id],
                 );
+                await commit(conn);
             } catch (err) {
+                await rollback(conn);
                 // ivyko klaida skaitant duomenis is DB
                 res.render("klaida", { err });
                 return;
@@ -392,6 +404,7 @@ app.post("/adresas", async (req, res) => {
             let conn;
             try {
                 conn = await connect();
+                await start(conn);
                 await query(
                     conn,
                     `
@@ -400,7 +413,9 @@ app.post("/adresas", async (req, res) => {
                     values (?, ?, ?, ?, ?)`,
                     [req.body.adresas, req.body.miestas, req.body.valstybe, req.body.pastoKodas, zmogusId],
                 );
+                await commit(conn);
             } catch (err) {
+                await rollback(conn);
                 // ivyko klaida irasant duomenis i DB
                 res.render("klaida", { err });
                 return;
@@ -436,6 +451,7 @@ app.get("/adresas/:id/del", async (req, res) => {
         );
         if (adresai.length > 0) {
           zmogusId = adresai[0].zmogusId;
+          await start(conn);
           await query(
             conn,
             `
@@ -443,8 +459,10 @@ app.get("/adresas/:id/del", async (req, res) => {
               where id = ?`,
             [id],
           );
+          await commit(conn);
         }
       } catch (err) {
+        await rollback(conn);
         // ivyko klaida trinant duomenis
         res.render("klaida", { err });
         return;
@@ -536,6 +554,7 @@ app.post("/kontaktas", async (req, res) => {
             let conn;
             try {
                 conn = await connect();
+                await start(conn);
                 await query(
                     conn,
                     `
@@ -544,7 +563,9 @@ app.post("/kontaktas", async (req, res) => {
                     where id = ?`,
                     [req.body.tipas, req.body.reiksme, id],
                 );
+                await commit(conn);
             } catch (err) {
+                await rollback(conn);
                 // ivyko klaida skaitant duomenis is DB
                 res.render("klaida", { err });
                 return;
@@ -566,6 +587,7 @@ app.post("/kontaktas", async (req, res) => {
             let conn;
             try {
                 conn = await connect();
+                await start(conn);
                 await query(
                     conn,
                     `
@@ -574,7 +596,9 @@ app.post("/kontaktas", async (req, res) => {
                     values (?, ?, ?)`,
                     [req.body.tipas, req.body.reiksme, zmogusId],
                 );
+                await commit(conn);
             } catch (err) {
+                await rollback(conn);
                 // ivyko klaida irasant duomenis i DB
                 res.render("klaida", { err });
                 return;
@@ -605,6 +629,7 @@ app.get("/kontaktas/:id/del", async (req, res) => {
         );
         if (kontaktai.length > 0) {
           zmogusId = kontaktai[0].zmogusId;
+          await start(conn);
           await query(
             conn,
             `
@@ -612,8 +637,10 @@ app.get("/kontaktas/:id/del", async (req, res) => {
               where id = ?`,
             [id],
           );
+          await commit(conn);
         }
       } catch (err) {
+        await rollback(conn);
         // ivyko klaida trinant duomenis
         res.render("klaida", { err });
         return;
