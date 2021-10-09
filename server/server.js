@@ -22,7 +22,7 @@ https.createServer({
     key: privateKey,
     cert: certificate
 }, app).listen(PORTS, function() {
-  console.log(`Server listening for https at https://rolandasseputis.lt:${PORTS}/BIT-SQL/json/filecontent:nd1.sql`)
+  console.log(`Server listening for https at https://rolandasseputis.lt:${PORTS}/zmones`)
 });
 // *****************************************************************************
 
